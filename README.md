@@ -4,5 +4,5 @@ IpInfo is simple tool for finding ip/website information.
 
 need:<br>
 ```
-sudo apt-get install lolcat
+sudo apt-get install lolcat curl
 ```
