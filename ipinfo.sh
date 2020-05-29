@@ -51,6 +51,11 @@ fi
 
 
 if [ $sub == "-t" ];then
+    if [ -z $web ]; then
+        echo "website is blank. input website"
+        echo "$0 -t www.example.com"
+        exit
+    fi
     echo ""
     publice=`ping $web -c 1 | head -n1 | cut -d '(' -f2 | cut -d ')' -f1`
     echo -e " website : $web"
