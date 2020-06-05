@@ -49,7 +49,6 @@ if [ $sub == "-m" ];then
 fi
 
 
-
 if [ $sub == "-t" ];then
     if [ -z $web ]; then
         echo "website is blank. input website"
@@ -57,14 +56,16 @@ if [ $sub == "-t" ];then
         exit
     fi
     echo ""
-    publice=`ping $web -c 1 | head -n1 | cut -d '(' -f2 | cut -d ')' -f1`
+    publice=`timeout 20 ping $web -c 1 | head -n1 | cut -d '(' -f2 | cut -d ')' -f1`
+    server=`curl -s k -I $web | grep Server | cut -d ':' -f2`
     echo -e " website : $web"
     echo -e " ip      : $publice"
+    echo -e " server  :$server"
     echo ""
-    infoip=`curl -s "http://api.ipinfodb.com/v3/ip-city/?key=1fa9974bd83bf097abf947ee11f9ed697fb3f108db13dfe9d7a48b63a7d197b0&format=json&ip=$publice"`
+    infoip=`timeout 20 curl -s "http://api.ipinfodb.com/v3/ip-city/?key=1fa9974bd83bf097abf947ee11f9ed697fb3f108db13dfe9d7a48b63a7d197b0&format=json&ip=$publice"`
     echo $infoip | tr -d '"{}' | tr ',' '\n'
     echo ""
-    whois $publice -a | grep -E "address:|mnt-by:|country:|created:|last-modified:|inetnum:|netname:|descr:"
+    timeout 20 whois $publice -a | grep -E "address:|mnt-by:|country:|created:|last-modified:|inetnum:|netname:|descr:"
     echo ""
     name=`hostname`
     echo "Nice to meet you "$name ". Good Luck."
